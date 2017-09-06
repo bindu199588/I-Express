@@ -33,7 +33,7 @@ object Main extends InHouseLogging{
     val insertInXpression =appConfig.getString("config.sql.insertInXpression")
 
     Class.forName(appConfig.getString("config.sql.driver"))
-
+    log.info("------------ Instantiating ---------------")
     //Converting inputstream to TagMessage
     val inputMsgStream =KafkaUtils.createStream(ssc,zkQuorum, group, topicsPartitionMap).
       map(kv => TagMessage(kv._1, kv._2))
@@ -59,6 +59,9 @@ object Main extends InHouseLogging{
         con.close()
       })
     })
+
+    ssc.start()             // Start the computation
+    ssc.awaitTermination()
   }
 
 }
