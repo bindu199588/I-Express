@@ -53,7 +53,7 @@ insert into SENTIMENT (id,sentiment) values (4,'glad');
 -- Table to update Xpression --
 CREATE TABLE XPRESSION(
    id    SERIAL PRIMARY KEY  NOT NULL,
-   tag_id BIGINT   NOT NULL references TAG(id),
+   tag_id BIGINT   NOT NULL references TAG(id) ON DELETE CASCADE,
    message VARCHAR(300),
    sentiment SMALLINT default 0,
    created_on TIMESTAMP default current_timestamp
