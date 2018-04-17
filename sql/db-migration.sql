@@ -2,7 +2,7 @@
 CREATE USER spark WITH PASSWORD 'spark';
 CREATE DATABASE xys OWNER spark;
 
--- Table to create Event
+
 CREATE TABLE EVENT(
    id    SERIAL PRIMARY KEY NOT NULL,
    name   CHAR(50) NOT NULL,
@@ -67,13 +67,32 @@ declare
   result text := '';
   i integer := 0;
 begin
-  for i in 1..25 loop
+  for i in 1..5 loop
     result := result || chars[1+random()*(array_length(chars, 1)-1)];
   end loop;
   return result;
 end;
 $$ language plpgsql;
 
+CREATE TABLE QUESTION(
+	id SERIAL PRIMARY KEY NOT NULL,
+	question VARCHAR(300),
+	likeCounter BIGINT default 0,
+	event_id BIGINT NOT NULL REFERENCES event(id) ,
+	created_on TIMESTAMP  default current_timestamp
+);
+CREATE TABLE EVENTAGENDA (
+	id SERIAL PRIMARY KEY NOT NULL,
+	agenda TEXT,
+	start_time TIMESTAMP,
+	end_time TIMESTAMP,
+	event_id BIGINT NOT NULL REFERENCES event(id) ,
+	created_on TIMESTAMP  default current_timestamp
+);
 
-insert into TAG (name) values ("#MIT TSHIRT");
-SELECT * FROM TAG;
+CREATE TABLE ADMIN(
+    id	SERIAL PRIMARY KEY  NOT NULL,
+    username VARCHAR(40) NOT NULL UNIQUE,
+    password VARCHAR(40) NOT NULL
+);
+
