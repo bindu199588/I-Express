@@ -7,7 +7,7 @@ CREATE TABLE EVENT(
    id    SERIAL PRIMARY KEY NOT NULL,
    name   CHAR(50) NOT NULL,
    created_on  TIMESTAMP default current_timestamp,
-   description Text,
+   description Text NOT NULL default '',
    owner CHAR (50),
    is_active BOOLEAN NOT NULL default true,
    access_code Text
@@ -19,7 +19,7 @@ CREATE TABLE TAG(
    id    SERIAL PRIMARY KEY      NOT NULL,
    name   CHAR(50) NOT NULL,
    created_on  TIMESTAMP default current_timestamp,
-   description Text,
+   description Text NOT NULL default '',
    event_id BIGINT NOT NULL references Event(id)
 
 );
