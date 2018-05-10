@@ -2,6 +2,32 @@
 CREATE USER spark WITH PASSWORD 'spark';
 CREATE DATABASE xys OWNER spark;
 
+CREATE TABLE ADMIN(
+    id	SERIAL PRIMARY KEY  NOT NULL,
+    username VARCHAR(40) NOT NULL UNIQUE,
+    password VARCHAR(40) NOT NULL,
+    is_super BOOLEAN NOT NULL DEFAULT false
+);
+
+
+CREATE TABLE USERGROUPS(
+ id SERIAL PRIMARY KEY NOT NULL,
+ group_name varchar(20),
+ description TEXT, 
+ created_on TIMESTAMP default current_timestamp
+);
+
+
+CREATE TABLE ADMIN_USERGROUPS(
+ id SERIAL PRIMARY KEY NOT NULL,
+ admin_id INT NOT NULL references ADMIN(id),
+ group_id INT NOT NULL references USERGROUPS(id),
+ created_on TIMESTAMP default current_timestamp 
+);
+
+ALTER TABLE ADMIN_USERGROUPS ADD CONSTRAINT ADMIN_USERGROUPS_UNIQUEKEY UNIQUE (admin_id,group_id);
+
+
 
 CREATE TABLE EVENT(
    id    SERIAL PRIMARY KEY NOT NULL,
@@ -89,29 +115,3 @@ CREATE TABLE EVENTAGENDA (
 	event_id BIGINT NOT NULL REFERENCES event(id) ,
 	created_on TIMESTAMP  default current_timestamp
 );
-
-CREATE TABLE ADMIN(
-    id	SERIAL PRIMARY KEY  NOT NULL,
-    username VARCHAR(40) NOT NULL UNIQUE,
-    password VARCHAR(40) NOT NULL,
-    is_super BOOLEAN NOT NULL DEFAULT false
-);
-
-
-CREATE TABLE USERGROUPS(
- id SERIAL PRIMARY KEY NOT NULL,
- group_name varchar(20),
- description TEXT, 
- created_on TIMESTAMP default current_timestamp
-);
-
-
-CREATE TABLE ADMIN_USERGROUPS(
- id SERIAL PRIMARY KEY NOT NULL,
- admin_id INT NOT NULL references ADMIN(id),
- group_id INT NOT NULL references USERGROUPS(id),
- created_on TIMESTAMP default current_timestamp 
-);
-
-ALTER TABLE ADMIN_USERGROUPS ADD CONSTRAINT ADMIN_USERGROUPS_UNIQUEKEY UNIQUE (admin_id,group_id);
-
