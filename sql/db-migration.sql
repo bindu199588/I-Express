@@ -8,9 +8,9 @@ CREATE TABLE EVENT(
    name   CHAR(50) NOT NULL,
    created_on  TIMESTAMP default current_timestamp,
    description Text NOT NULL default '',
-   owner CHAR (50),
    is_active BOOLEAN NOT NULL default true,
-   access_code Text
+   access_code Text,
+   owner_group INT not null references usergroups(id)
 );
 
 
@@ -93,7 +93,8 @@ CREATE TABLE EVENTAGENDA (
 CREATE TABLE ADMIN(
     id	SERIAL PRIMARY KEY  NOT NULL,
     username VARCHAR(40) NOT NULL UNIQUE,
-    password VARCHAR(40) NOT NULL
+    password VARCHAR(40) NOT NULL,
+    is_super BOOLEAN NOT NULL DEFAULT false
 );
 
 
@@ -113,9 +114,4 @@ CREATE TABLE ADMIN_USERGROUPS(
 );
 
 ALTER TABLE ADMIN_USERGROUPS ADD CONSTRAINT ADMIN_USERGROUPS_UNIQUEKEY UNIQUE (admin_id,group_id);
-ALTER TABLE ADMIN ADD COLUMN is_super BOOLEAN NOT NULL DEFAULT false;
 
-ALTER TABLE EVENT DROP COLUMN owner;
-ALTER TABLE EVENT ADD COLUMN owner_group INT ;
-UPDATE EVENT SET OWNER =;
-ALTER TABLE EVENT ALTER COLUMN owner_group set not null references usergroups(id);
