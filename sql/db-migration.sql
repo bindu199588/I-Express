@@ -96,3 +96,26 @@ CREATE TABLE ADMIN(
     password VARCHAR(40) NOT NULL
 );
 
+
+CREATE TABLE USERGROUPS(
+ id SERIAL PRIMARY KEY NOT NULL,
+ group_name varchar(20),
+ description TEXT, 
+ created_on TIMESTAMP default current_timestamp
+);
+
+
+CREATE TABLE ADMIN_USERGROUPS(
+ id SERIAL PRIMARY KEY NOT NULL,
+ admin_id INT NOT NULL references ADMIN(id),
+ group_id INT NOT NULL references USERGROUPS(id),
+ created_on TIMESTAMP default current_timestamp 
+);
+
+ALTER TABLE ADMIN_USERGROUPS ADD CONSTRAINT ADMIN_USERGROUPS_UNIQUEKEY UNIQUE (admin_id,group_id);
+ALTER TABLE ADMIN ADD COLUMN is_super BOOLEAN NOT NULL DEFAULT false;
+
+ALTER TABLE EVENT DROP COLUMN owner;
+ALTER TABLE EVENT ADD COLUMN owner_group INT ;
+UPDATE EVENT SET OWNER =;
+ALTER TABLE EVENT ALTER COLUMN owner_group set not null references usergroups(id);
