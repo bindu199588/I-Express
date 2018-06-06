@@ -115,3 +115,6 @@ CREATE TABLE EVENTAGENDA (
 	event_id BIGINT NOT NULL REFERENCES event(id) ,
 	created_on TIMESTAMP  default current_timestamp
 );
+
+ALTER TABLE xpression ADD COLUMN category text NOT NULL DEFAULT 'COMMENT';
+ALTER TABLE tag ADD COLUMN is_active boolean NOT NULL DEFAULT false;
